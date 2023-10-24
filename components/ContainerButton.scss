@@ -1,0 +1,62 @@
+$color_1: #fff;
+$background-color_1: #000;
+$background-color_2: #1d83fb;
+$background-color_3: #0477fa;
+$background-color_4: #0465d4;
+
+span.bluebutton {
+    align-items: center;
+    background-color: $background-color_2;
+    border: 1px solid #1d83fb;
+    border-radius: 10px;
+    color: $color_1;
+    display: grid;
+    padding: 10px;
+    text-align: center;
+}
+
+span {
+    &:hover.bluebutton {
+        border: 1px solid #0477fa;
+        background-color: $background-color_3;
+        color: $color_1;
+    }
+
+    &:active.bluebutton {
+        border: 1px solid #0465d4;
+        background-color: $background-color_4;
+        color: $color_1;
+    }
+}
+
+span[disabled].bluebutton {
+    border: 1px solid #0465d4;
+    background-color: $background-color_4;
+    opacity: .3;
+    color: $color_1;
+}
+
+span.bluebuttonsmall {
+    align-items: center;
+    background-color: $background-color_2;
+    border: 1px solid #1d83fb;
+    border-radius: 4px;
+    color: $color_1;
+    display: grid;
+    margin-right: 5px;
+    text-align: center;
+}
+
+span {
+    &:hover.bluebuttonsmall {
+        border: 1px solid #0477fa;
+        background-color: $background-color_3;
+        color: $color_1;
+    }
+
+    &:active.bluebuttonsmall {
+        border: 1px solid #0465d4;
+        background-color: $background-color_4;
+        color: $color_1;
+    }
+}
