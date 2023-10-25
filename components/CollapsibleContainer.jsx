@@ -132,7 +132,7 @@ export default class CollapsibleContainer extends React.Component {
 
     onShowClick = () => {
         this.setState({
-            containerCollapsed: !this.state.containerCollapsed
+            isCollapsed: !this.state.isCollapsed
         });
     }
 }
