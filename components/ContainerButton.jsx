@@ -1,10 +1,6 @@
-/*
-* This reusable component is for adding customizable button like object.
-*/
-
+import "./ContainerButton.css";
 import React from 'react';
 import PropTypes from 'prop-types';
-import "./ContainerButton.scss";
 
 export default class ContainerButton extends React.Component {
     constructor(props) {

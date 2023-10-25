@@ -2,7 +2,7 @@
 * This reusable component is for adding a common containerized map.
 */
 
-import "./ContainerMap.scss";
+import "./ContainerMap.css";
 import React from "react";
 import PropTypes from "prop-types";
 import MapboxGL from "mapbox-gl";

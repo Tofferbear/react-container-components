@@ -1,4 +1,4 @@
-import "./TableFooter.scss";
+import "./TableFooter.css";
 import React from 'react';
 import PropTypes from 'prop-types';
  

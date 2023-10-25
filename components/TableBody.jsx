@@ -1,4 +1,4 @@
-import "./TableBody.scss";
+import "./TableBody.css";
 import React from 'react';
 import PropTypes from 'prop-types';
 
