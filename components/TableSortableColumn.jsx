@@ -10,7 +10,9 @@ export default class TableSortableColumn extends React.Component {
         super(props);
 
         this.state = {
-            showFilterButton: false
+            showFilterButton: false,
+            sortColumn: null,
+            sortDirection: -1
         };
     }
 
@@ -36,20 +38,16 @@ export default class TableSortableColumn extends React.Component {
                         +
                     </span>
                     <span
-                        onClick={() => {
-                            if (this.props.onSortColumnChangeClick) {
-                                this.props.onSortColumnChangeClick(this.props.columnSource);
-                            }
-                        }}
+                        onClick={this.onSortColumnChangeClick(this.props.columnSource)}
                     >
                         {this.props.label}
                     </span>
                     <span
                         style={{
-                            visibility: this.props.sortColumn === this.props.columnSource ? "visible" : "hidden"
+                            visibility: this.state.sortColumn === this.props.columnSource ? "visible" : "hidden"
                         }}
                     >
-                        {this.props.sortColumn === this.props.columnSource ? this.props.sortDirection === -1 ? '▲' : '▼' : '■'}
+                        {this.state.sortColumn === this.props.columnSource ? this.state.sortDirection === -1 ? '▲' : '▼' : '■'}
                     </span>
                 </div>
             </th>
@@ -61,6 +59,15 @@ export default class TableSortableColumn extends React.Component {
             await this.props.onAddToFilterClick(this.props.columnSource, this.props.label);
         }    
     };
+
+    onSortColumnChangeClick = async (sortColumn) => {
+        const sortDirection = this.state.sortColumn === sortColumn ? this.state.sortDirection * -1 : 1;
+
+        this.setState({
+            sortColumn: sortColumn,
+            sortDirection: sortDirection
+        });
+    }
 
     onToggleShowFilterButton = (value) => {
         this.setState({
@@ -76,15 +83,6 @@ TableSortableColumn.propTypes = {
     /** The name of the column that provides the source data for the rows. */
     columnSource: PropTypes.string.isRequired,
 
-    /** Optional - If provided, this is the name of the column currently being sorted. */
-    sortColumn: PropTypes.string,
-
-    /** Optional - If provided, this is the direction of the sort. 1 for ascending, -1 for descending. */
-    sortDirection: PropTypes.number,
-
     /** Optional - If provided, will call into the passed in function and pass in the column source and label. */
-    onAddToFilterClick: PropTypes.func,
-
-    /** Optional - If provided, will call into the passed in function and pass in the column source. */
-    onSortColumnChangeClick: PropTypes.func
+    onAddToFilterClick: PropTypes.func
 }
