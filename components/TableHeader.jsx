@@ -9,7 +9,7 @@ export default class TableHeader extends React.Component {
         this.state = {};
     }
 
-    return() {
+    render() {
         return (
             <span
                 className={(this.props.hasOwnProperty("showBorder") && !this.props.showBorder) ? "noborder" : "withborder"}
