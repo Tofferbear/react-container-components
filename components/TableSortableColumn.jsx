@@ -76,11 +76,11 @@ TableSortableColumn.propTypes = {
     /** The name of the column that provides the source data for the rows. */
     columnSource: PropTypes.string.isRequired,
 
-    /** The name of the column currently being sorted. */
-    sortColumn: PropTypes.string.isRequired,
+    /** Optional - If provided, this is the name of the column currently being sorted. */
+    sortColumn: PropTypes.string,
 
-    /** The direction of the sort. 1 for ascending, -1 for descending. */
-    sortDirection: PropTypes.number.isRequired,
+    /** Optional - If provided, this is the direction of the sort. 1 for ascending, -1 for descending. */
+    sortDirection: PropTypes.number,
 
     /** Optional - If provided, will call into the passed in function and pass in the column source and label. */
     onAddToFilterClick: PropTypes.func,
