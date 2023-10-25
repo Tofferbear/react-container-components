@@ -118,7 +118,7 @@ export default class PagingControl extends React.Component {
     }
 }
 
-Paging.propTypes = {
+PagingControl.propTypes = {
     /** The count of records in this page. */
     count: PropTypes.number.isRequired,
 
