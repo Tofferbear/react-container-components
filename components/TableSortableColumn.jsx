@@ -11,7 +11,7 @@ export default class TableSortableColumn extends React.Component {
 
         this.state = {
             showFilterButton: false,
-            sortColumn: null,
+            sortColumn: "",
             sortDirection: -1
         };
     }
