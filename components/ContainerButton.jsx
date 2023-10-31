@@ -1,4 +1,4 @@
-import "./ContainerButton.css";
+import './ContainerButton.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -12,12 +12,12 @@ export default class ContainerButton extends React.Component {
     render() {
         return (
             <span
-                className={this.props.hasOwnProperty("small") ? (this.props.small ? "bluebuttonsmall" : "bluebutton") : false}
-                disabled={this.props.hasOwnProperty("disabled") ? this.props.disabled : false}
-                onClick={this.onClick}
+                className={(this.props.hasOwnProperty('small') && this.props.small) ? 'bluebuttonsmall' : 'bluebutton'}
+                disabled={this.props.hasOwnProperty('disabled') ? this.props.disabled : false}
+                onClick={() => this.onClick()}
                 style={this.props.style}
             >
-                {this.props.hasOwnProperty("label") ? this.props.label : ""}
+                {this.props.hasOwnProperty('label') ? this.props.label : ''}
                 {this.props.children}
             </span>
         );

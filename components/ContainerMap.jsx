@@ -2,11 +2,12 @@
 * This reusable component is for adding a common containerized map.
 */
 
-import "./ContainerMap.css";
-import React from "react";
-import PropTypes from "prop-types";
-import MapboxGL from "mapbox-gl";
-import { mapboxStyleUris } from "../models/mapboxStyleUris";
+import React from 'react';
+import PropTypes from 'prop-types';
+import MapboxGL from 'mapbox-gl';
+import { mapboxStyleUris } from '../models/mapboxStyleUris';
+import ContainerButton from './ContainerButton';
+import CollapsibleContainer from './CollapsibleContainer';
 
 export default class ContainerMap extends React.PureComponent {
     constructor(props) {
@@ -18,7 +19,7 @@ export default class ContainerMap extends React.PureComponent {
             latitude: 0,
             longitude: 0,
             zoom: 9,
-            mapboxStyle: mapboxStyleUris["DARK"],
+            mapboxStyle: mapboxStyleUris['DARK'],
             markers: [],
             layers: []
         }
@@ -100,11 +101,12 @@ export default class ContainerMap extends React.PureComponent {
                     zoom: this.state.zoom
                 });
 
-                this.refreshLayers();
+                this.map.on('load', () => {
+                    this.refreshLayers();
+                    this.refreshMarkers();    
+                });
 
-                this.refreshMarkers();
-
-                this.map.on("click", (e) => {
+                this.map.on('click', (e) => {
                     const clickedCoord = new MapboxGL.LngLat(e.lngLat.lng, e.lngLat.lat);
                     const tolerance = 20;
                     let closestIndex = -1;
@@ -184,7 +186,7 @@ export default class ContainerMap extends React.PureComponent {
         }
 
         if (stateUpdate.updateState) {
-            this.map.on("load", () => {
+            this.map.on('load', () => {
                 this.refreshLayers();
                 this.refreshMarkers();
             });
@@ -203,54 +205,78 @@ export default class ContainerMap extends React.PureComponent {
                     enableCollapse={this.state.enableCollapse}
                     label={this.props.label}
                 >
-                    <div className="map">
-                        {
-                            this.props.poiLegend &&
-                            <div className="legend-container">
-                                <div className="legend">
+                    <div className='map'>
+                        <div
+                            ref={this.mapContainerRef}
+                            style={{
+                                height: '400px',
+                                margin: '5px'                            
+                            }}
+                        >
+                            {
+                                this.props.poiLegend &&
+                                <div
+                                    style={{
+                                        columnGap: '10px',
+                                        display: 'flex',
+                                        left: '10px',
+                                        position: 'absolute',
+                                        top: '10px',
+                                        zIndex: '1'
+                                    }}
+                                >
                                     {
-                                        Object.entries(this.props.poiLegend).map(([label]) => (
-                                            <div
-                                                key={label}
-                                                className="legend-item"
+                                        Object.entries(this.props.poiLegend).map(([legendItem]) => (
+                                            <span
+                                                key={legendItem}
+                                                style={{
+                                                    display: 'grid',
+                                                    gridTemplateColumns: '30px auto'
+                                                }}
                                             >
                                                 <div
-                                                    className="legend-color"
                                                     style={{
-                                                        backgroundColor: this.props.poiLegend[label]
+                                                        backgroundColor: this.props.poiLegend[legendItem],
+                                                        borderRadius: '50%',
+                                                        height: '20px',
+                                                        marginRight: '8px',
+                                                        width: '20px'
                                                     }}
                                                 />
-                                                <div className="legend-label">{label}</div>
-                                            </div>
+                                                <div>{legendItem}</div>
+                                            </span>
                                         ))
                                     }
                                 </div>
-                            </div>
-                        }
-                        <div className="coord-label">
+                            }
+                        </div>
+                        <div
+                            style={{
+                                display: 'grid',
+                                fontSize: 'x-small',
+                                gridTemplateColumns: 'auto auto',
+                                justifyContent: 'left'
+                            }}
+                        >
                             <span>
                                 Latitude: {this.state.latitude} |
                                 Longitude: {this.state.longitude} |
                                 Zoom: {this.state.zoom}
                             </span>
                             <ContainerButton
-                                buttonLabel={"Reset"}
+                                buttonLabel={'Reset'}
                                 small={true}
                                 onButtonClick={this.resetMap}
                                 buttonStyle={{
-                                    marginLeft: "10px",
-                                    width: "50px"
+                                    marginLeft: '10px',
+                                    width: '50px'
                                 }}
                             />
                         </div>
-                        <div ref={this.mapContainerRef} className="map-container" />
                     </div>
                 </CollapsibleContainer>
-
             </div>
-
         );
-
     }
 
     resetMap = () => {
@@ -270,13 +296,13 @@ export default class ContainerMap extends React.PureComponent {
         const coordinates = [];
 
         switch (pointType) {
-            case "circle": 
-            case "text": {
+            case 'circle': 
+            case 'text': {
                 coordinates.push(longitude);
                 coordinates.push(latitude);
                 break;
             }
-            case "triangle": {
+            case 'triangle': {
                 coordinates.push(this.generateTriangleCoords(longitude, latitude, pointSize, rotationAngleInDegrees));
                 break;
             }
@@ -326,16 +352,16 @@ export default class ContainerMap extends React.PureComponent {
 
             layer.pointsOfInterest.forEach((poi) => {
                 features.push({
-                    type: "Feature",
+                    type: 'Feature',
                     geometry: {
                         type: this.getGeometryTypeFromPointType(layer.pointType),
                         coordinates: this.configureCoordinatesForPointType(layer.pointType, poi.longitude, poi.latitude, layer.pointSize, 0)
                     },
                     properties: {
-                        id: "pointsOfInterest",
+                        id: 'pointsOfInterest',
                         name: `${layer.colorOfPoints} Size ${layer.pointSize} ${layer.pointType} Points`,
                         color: layer.colorOfPoints,
-                        label: poi.label ? poi.label : ""
+                        label: poi.label ? poi.label : ''
                     }
                 });
             });
@@ -344,40 +370,40 @@ export default class ContainerMap extends React.PureComponent {
                 id: `${layer.colorOfPoints}Size${layer.pointSize}${layer.pointType}Layer`,
                 type: this.getLayerTypeFromPointType(layer.pointType),
                 source: {
-                    type: "geojson",
+                    type: 'geojson',
                     data: {
-                        type: "FeatureCollection",
+                        type: 'FeatureCollection',
                         features: features
                     }
                 }
             };
 
             switch (layer.pointType) {
-                case "circle": {
+                case 'circle': {
                     newLayer.paint = {
-                        "circle-radius": layer.pointSize,
-                        "circle-color": ["get", "color"]
+                        'circle-radius': layer.pointSize,
+                        'circle-color': ['get', 'color']
                     };
 
                     break;
                 }
 
-                case "triangle": {
+                case 'triangle': {
                     newLayer.paint = {
-                        "line-color": ["get", "color"],
-                        "line-width": 3
+                        'line-color': ['get', 'color'],
+                        'line-width': 3
                     };
 
                     break;
                 }
 
-                case "text": {
+                case 'text': {
                     newLayer.layout = {
-                        "text-field": ["get", "label"]
+                        'text-field': ['get', 'label']
                     };
 
                     newLayer.paint = {
-                        "text-color": ["get", "color"]
+                        'text-color': ['get', 'color']
                     };
 
                     break;
@@ -414,16 +440,16 @@ export default class ContainerMap extends React.PureComponent {
     }
 
     getGeometryTypeFromPointType(pointType) {
-        let geometryType = "";
+        let geometryType = '';
 
         switch (pointType) {
-            case "circle":
-            case "text": {
-                geometryType = "Point";
+            case 'circle':
+            case 'text': {
+                geometryType = 'Point';
                 break;
             }
-            case "triangle": {
-                geometryType = "Polygon";
+            case 'triangle': {
+                geometryType = 'Polygon';
                 break;
             }
         }
@@ -432,15 +458,15 @@ export default class ContainerMap extends React.PureComponent {
     }
 
     getLayerTypeFromPointType(pointType) {
-        let layerType = "";
+        let layerType = '';
 
         switch (pointType) {
-            case "triangle": {
-                layerType = "line";
+            case 'triangle': {
+                layerType = 'line';
                 break;
             }
-            case "text": {
-                layerType = "symbol";
+            case 'text': {
+                layerType = 'symbol';
                 break;
             }
             default: {
@@ -452,14 +478,16 @@ export default class ContainerMap extends React.PureComponent {
     }
 
     refreshLayers() {
-        if (this.state.layers && this.state.layers.length > 0) {
-            const layerIds = this.map.layers.map((layer) => layer.id);
+        if (this.map && this.state.layers && this.state.layers.length > 0) {
+            if (this.map.layers) {
+                const layerIds = this.map.layers.map((layer) => layer.id);
 
-            layerIds.forEach((layerId) => {
-                if (this.map.getLayer(layerId)) {
-                    this.map.removeLayer(layerId);
-                }
-            });
+                layerIds.forEach((layerId) => {
+                    if (this.map.getLayer(layerId)) {
+                        this.map.removeLayer(layerId);
+                    }
+                });    
+            }
 
             this.state.layers.forEach((layer) => {
                 this.map.addLayer(layer);
@@ -468,18 +496,49 @@ export default class ContainerMap extends React.PureComponent {
     }
 
     refreshMarkers() {
-        this.map.markers.forEach((marker) => {
-            marker.remove();
-        });
-
-        if (this.state.markers && this.state.markers.length > 0) {
-            this.state.markers.forEach((marker) => {
-                new MapboxGL.Marker()
-                    .setLngLat([marker.longitude, marker.latitude])
-                    .setPopup(new MapboxGL.Popup().setHTML(marker.label))
-                    .addTo(this.map);
-            });
+        if (this.map) {
+            if (this.map.markers) {
+                this.map.markers.forEach((marker) => {
+                    marker.remove();
+                });   
+            }
+    
+            if (this.state.markers && this.state.markers.length > 0) {
+                this.state.markers.forEach((marker) => {
+                    new MapboxGL.Marker()
+                        .setLngLat([marker.longitude, marker.latitude])
+                        .setPopup(new MapboxGL.Popup().setHTML(marker.label))
+                        .addTo(this.map);
+                });
+            }    
         }
+    }
+
+    toggleLayerVisibility(index, layerId) {
+        const updatedLayers = [...this.state.layers];
+        updatedLayers[index].visible = !updatedLayers[index].visible;
+
+        this.setState({
+            layers: updatedLayers
+        }, () => {
+            if (this.map) {
+                if (updatedLayers[index].visible) {
+                    this.map.setLayoutProperty(
+                        layerId,
+                        'visibility',
+                        'visible'
+                    );
+                } else {
+                    this.map.setLayoutProperty(
+                        layerId,
+                        'visibility',
+                        'none'
+                    );
+                }
+            }
+
+            this.refreshLayers();
+        });
     }
 }
 
@@ -498,6 +557,9 @@ ContainerMap.propTypes = {
 
     /** Optional - If provided, set to true for enabling collapsible container, otherwise it will be a normal container. */
     enableCollapse: PropTypes.bool,
+
+    /** Optional - If provided, this will add a control to allow showing/hiding of specific map layers. */
+    enableLayerFilter: PropTypes.bool,
 
     /** Option - If provided, set to false for disabling mouse, touch, or keyboard listeners. */
     interactive: PropTypes.bool,
