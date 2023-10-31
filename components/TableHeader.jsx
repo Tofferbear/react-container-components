@@ -1,14 +1,15 @@
+import "./TableHeader.css";
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default class ContainerHeader extends React.Component {
+export default class TableHeader extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {};
     }
 
-    return() {
+    render() {
         return (
             <span
                 className={(this.props.hasOwnProperty("showBorder") && !this.props.showBorder) ? "noborder" : "withborder"}
@@ -24,7 +25,7 @@ export default class ContainerHeader extends React.Component {
     }
 }
 
-ContainerHeader.propTypes = {
+TableHeader.propTypes = {
     /** Optional - If provided will override the default value of "center" */
     alignItems: PropTypes.string,
 

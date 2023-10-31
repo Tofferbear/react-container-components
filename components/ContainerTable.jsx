@@ -165,10 +165,7 @@ export default class ContainerTable extends React.Component {
                                         <TableSortableColumn
                                             label={this.props.tableColumns[columnSource].columnLabel}
                                             columnSource={columnSource}
-                                            sortColumn={this.props.sortColumn}
-                                            sortDirection={this.props.sortDirection}
                                             onAddToFilterClick={this.props.tableColumns[columnSource].addToFilterOrSearchClick}
-                                            onSortColumnChangeClick={this.props.onSortColumnChange}
                                             key={columnSourceKey}
                                         />
                                     ))
@@ -484,15 +481,6 @@ ContainerTable.propTypes = {
 
     /** Optional - If provided, this will contain an array of custom <TableFooter> elements for adding to the table. */
     tableFooters: PropTypes.array,
-
-    /** Optional - If provided, this will be set to the active column that is being sorted. */
-    sortColumn: PropTypes.string,
-
-    /** Optional - If provided, this will be a number that represents the direction of the sort. */
-    sortDirection: PropTypes.number,
-
-    /** Optional - If provided, this is an event handler for when a sort column is changed. */
-    onSortColumnChange: PropTypes.func,
 
     /** Optional - The count of rows for the entire data set (not what's in tableData).. */
     pagingCount: PropTypes.number,
