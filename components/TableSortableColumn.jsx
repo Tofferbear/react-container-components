@@ -11,7 +11,7 @@ export default class TableSortableColumn extends React.Component {
 
         this.state = {
             showFilterButton: false,
-            sortColumn: "",
+            sortColumn: '',
             sortDirection: -1
         };
     }
@@ -29,22 +29,22 @@ export default class TableSortableColumn extends React.Component {
                     }}
                 >
                     <span
-                        onClick={this.onAddToFilterClick}
+                        onClick={() => this.onAddToFilterClick()}
                         style={{
-                            cursor: "pointer",
-                            visibility: (this.state.showFilterButton && this.props.onAddToFilterClick) ? "visible" : "hidden"
+                            cursor: 'pointer',
+                            visibility: (this.state.showFilterButton && this.props.onAddToFilterClick) ? 'visible' : 'hidden'
                         }}
                     >
                         +
                     </span>
                     <span
-                        onClick={this.onSortColumnChangeClick(this.props.columnSource)}
+                        onClick={() => this.onSortColumnChangeClick(this.props.columnSource)}
                     >
                         {this.props.label}
                     </span>
                     <span
                         style={{
-                            visibility: this.state.sortColumn === this.props.columnSource ? "visible" : "hidden"
+                            visibility: this.state.sortColumn === this.props.columnSource ? 'visible' : 'hidden'
                         }}
                     >
                         {this.state.sortColumn === this.props.columnSource ? this.state.sortDirection === -1 ? '▲' : '▼' : '■'}
